@@ -1,0 +1,68 @@
+<aura:component >
+    <aura:handler name="sendPicklistValue" event="c:PicklistValueProvider" action="{!c.handleStatusPicklistEvent}" />
+    <aura:attribute name="projectStatus" type="String" />
+
+    <aura:attribute name="project" type="EECRM_Project__c" required="true" />
+    <aura:attribute name="responsiblePersons" type="Contact[]" />
+    <aura:attribute name="showResponsiblePersonDialog" type="boolean" default="false" />
+
+
+    <lightning:layout aura:id="project-form" multipleRows="true">
+        <lightning:layoutItem size="5" class="slds-box slds-theme_default slds-m-top_small">
+            <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">Basic info</legend>
+            <lightning:layout multipleRows="true">
+                <lightning:layoutItem size="5" padding="around-small">
+                    <lightning:input label="Project Name" name="project-name" value="{!v.project.Project_Name__c}" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="4" padding="around-small">
+                    <lightning:input label="Category" name="project-category" value="{!v.project.Category__c}" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="4" padding="around-small">
+                    <c:PicklistComponent sObjectName="EECRM_Project__c" sObjectFieldName="Category__c" fieldLabel="Category" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="5" padding="around-small">
+                    <c:PicklistComponent sObjectName="EECRM_Project__c" sObjectFieldName="Status__c" fieldLabel="Status" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="5" padding="around-small">
+                    <lightning:input class="slds-m-top_medium" type="checkbox" label="Validated" name="project-validated" value="{!v.project.Validated__c}"
+                    />
+                </lightning:layoutItem>
+            </lightning:layout>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="5" class="slds-box slds-theme_default slds-m-left_small slds-m-top_small hx">
+            <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">About</legend>
+            <lightning:layout multipleRows="true" verticalAlign="stretch" class="hx">
+                <lightning:layoutItem size="12" padding="around-small">
+                    <lightning:textarea label="Description" name="project-name" value="{!v.project.Description__c}" />
+                </lightning:layoutItem>
+            </lightning:layout>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="5" class="slds-box slds-theme_default slds-m-top_small">
+            <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">Responsibility</legend>
+            <lightning:layout multipleRows="true">
+                <lightning:button variant="brand" label="Add Responsible Person" onclick="{!c.showResponsiblePersonDialog}" />                
+            </lightning:layout>
+        </lightning:layoutItem>
+    </lightning:layout>
+    <aura:if isTrue="{!v.showResponsiblePersonDialog}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Modal Header</h2>
+                    <p class="slds-m-top_x-small">Here’s a tagline if you need it. It is allowed to extend across mulitple lines, so I’m making up content
+                        to show that to you. It is allowed to
+                        <a href="javascript:void(0);">contain links or be a link</a>.</p>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <c:EECRM_LookupDialog sObjectType="Contact"/>
+                </div>
+                <footer class="slds-modal__footer">
+                        <lightning:button variant="brand" label="Save" onclick="{!c.closeResponsiblePersonDialog}" />
+                        <lightning:button variant="brand" label="Close" onclick="{!c.closeResponsiblePersonDialog}" />
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

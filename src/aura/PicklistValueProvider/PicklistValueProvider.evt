@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="Passing picklist value">
+    <aura:attribute name="picklistValue" type="String"/>
+    <aura:attribute name="sObjectName" type="String"/>
+    <aura:attribute name="sObjectFieldName" type="String"/>
+</aura:event>

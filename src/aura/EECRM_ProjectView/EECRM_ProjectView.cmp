@@ -1,0 +1,35 @@
+<aura:component implements="force:appHostable">
+    <aura:attribute name="project" type="EECRM_Project__c" default="{'sobjectType':'EECRM_Project__c'}"/>     
+       <lightning:layout class="slds-page-header slds-page-header--object-home">
+        <lightning:layoutItem >
+            <lightning:icon iconName="standard:scan_card" alternativeText="Project"/>
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="horizontal-small">
+            <div class="page-section page-header">
+                <h1 class="slds-text-heading--label">Project</h1>
+                <h2 class="slds-text-heading--medium">
+                    <aura:if isTrue="{!!empty(v.project.Project_Name__c)}">
+                        {!v.project.Project_Name__c}
+                        <aura:set attribute="else"> 
+                        	New project creation
+	   					</aura:set>
+                    </aura:if>                    
+                </h2>
+            </div>
+        </lightning:layoutItem>         
+     </lightning:layout>
+    <lightning:tabSet class="slds-box slds-theme_shade slds-m-top_small">
+        <lightning:tab >
+             <aura:set attribute="label">
+                 <lightning:icon iconName="utility:connected_apps" />
+                 Information                 
+            </aura:set>
+            <c:EECRM_ProjectDetails project="{!v.project}"/>
+        </lightning:tab>
+        <lightning:tab >
+             <aura:set attribute="label">Changes</aura:set>
+           
+        </lightning:tab>
+      </lightning:tabSet>
+    
+</aura:component>
