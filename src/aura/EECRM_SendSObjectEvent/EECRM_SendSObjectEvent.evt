@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="Passing sObject">
+    <aura:attribute name="sObjectType" type="String"/>
+    <aura:attribute name="sObjectEntity" type="sObject"/>    
+</aura:event>

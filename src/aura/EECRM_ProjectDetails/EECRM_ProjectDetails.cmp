@@ -1,5 +1,7 @@
-<aura:component >
+<aura:component>
     <aura:handler name="sendPicklistValue" event="c:PicklistValueProvider" action="{!c.handleStatusPicklistEvent}" />
+    <aura:handler name="sendSObjectEntity" event="c:EECRM_SendSObjectEvent" action="{!c.handleLookupSObject}" />
+
     <aura:attribute name="projectStatus" type="String" />
 
     <aura:attribute name="project" type="EECRM_Project__c" required="true" />
@@ -39,8 +41,19 @@
         </lightning:layoutItem>
         <lightning:layoutItem size="5" class="slds-box slds-theme_default slds-m-top_small">
             <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">Responsibility</legend>
+            <lightning:layout multipleRows="true" class="slds-container_x-large">
+                <aura:iteration items="{!v.responsiblePersons}" var="contact">
+                    <lightning:layoutItem size="10">
+                        <lightning:icon iconName="standard:avatar" alternativeText="Project" />
+                        <span class="slds-m-top_x-small slds-m-left_small">{!contact.Name}</span>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="slds-float_right" size="2">
+                        <lightning:button variant="base" label="Remove" title="Base action" />
+                    </lightning:layoutItem>
+                </aura:iteration>
+            </lightning:layout>
             <lightning:layout multipleRows="true">
-                <lightning:button variant="brand" label="Add Responsible Person" onclick="{!c.showResponsiblePersonDialog}" />                
+                <lightning:button variant="brand" label="Add Responsible Person" onclick="{!c.showResponsiblePersonDialog}" />
             </lightning:layout>
         </lightning:layoutItem>
     </lightning:layout>
@@ -55,11 +68,11 @@
                         <a href="javascript:void(0);">contain links or be a link</a>.</p>
                 </header>
                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                        <c:EECRM_LookupDialog sObjectType="Contact"/>
+                    <c:EECRM_LookupDialog sObjectType="Contact" />
                 </div>
                 <footer class="slds-modal__footer">
-                        <lightning:button variant="brand" label="Save" onclick="{!c.closeResponsiblePersonDialog}" />
-                        <lightning:button variant="brand" label="Close" onclick="{!c.closeResponsiblePersonDialog}" />
+                    <lightning:button variant="brand" label="Save" onclick="{!c.closeResponsiblePersonDialog}" />
+                    <lightning:button variant="brand" label="Close" onclick="{!c.closeResponsiblePersonDialog}" />
                 </footer>
             </div>
         </section>

@@ -13,6 +13,13 @@
 		var source = event.currentTarget;			
 		var contacts = component.get("v.contacts");		
 		var index = source.dataset.index;
-		alert(contacts[index].Name+' '+contacts[index].Id);
+		
+		var sObjectEvent = component.getEvent('sendSObjectEntity');
+		sObjectEvent.setParams(
+			{
+				"sObjectType" : component.get("v.sObjectType"),
+				"sObjectEntity" : component.get("v.contacts")[index]
+			});
+		sObjectEvent.fire();
 	} 
 })

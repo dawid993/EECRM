@@ -1,13 +1,15 @@
 <aura:component controller="EECRM_SLDS_Utils">
+
     <aura:attribute name="sObjectType" type="String" required="true"/>
     <aura:attribute name="contacts" type="sObject[]"/>
+    <aura:registerEvent name="sendSObjectEntity" type="c:EECRM_SendSObjectEvent"/>     
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
-    <ul class="slds-has-dividers_around-space" data-testtest="sdasdas" onmouseover="this.style.background='gray'">              
+    <ul class="slds-has-dividers_around-space">              
         <aura:iteration items="{!v.contacts}" var="ct" indexVar="i">
             <li class="slds-item" onclick="{!c.chooseContact}" data-index="{!i}">
-               <lightning:layout>
-                    <lightning:layoutItem>
+               <lightning:layout >
+                    <lightning:layoutItem >
                             <lightning:icon iconName="standard:avatar" alternativeText="Project"/>
                             <span class="slds-m-top_x-small slds-m-left_small">{!ct.Name}</span>
                         </lightning:layoutItem>                    
@@ -15,4 +17,4 @@
             </li>
         </aura:iteration>
     </ul>
-</aura:component> 
+</aura:component>
