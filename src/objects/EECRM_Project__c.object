@@ -131,6 +131,71 @@
         <visibleLines>25</visibleLines>
     </fields>
     <fields>
+        <fullName>Initial_Budget__c</fullName>
+        <externalId>false</externalId>
+        <label>Initial Budget</label>
+        <precision>18</precision>
+        <required>true</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Mailbox__c</fullName>
+        <externalId>false</externalId>
+        <label>Mailbox</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Planned_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Planned Start Date</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Priority__c</fullName>
+        <externalId>false</externalId>
+        <label>Priority</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Important</fullName>
+                    <default>false</default>
+                    <label>Important</label>
+                </value>
+                <value>
+                    <fullName>Major</fullName>
+                    <default>false</default>
+                    <label>Major</label>
+                </value>
+                <value>
+                    <fullName>Minor</fullName>
+                    <default>false</default>
+                    <label>Minor</label>
+                </value>
+                <value>
+                    <fullName>Trivial</fullName>
+                    <default>false</default>
+                    <label>Trivial</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Project_Name__c</fullName>
         <externalId>false</externalId>
         <label>Project Name</label>
@@ -153,6 +218,15 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Start Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Status__c</fullName>

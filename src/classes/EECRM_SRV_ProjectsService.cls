@@ -21,10 +21,10 @@ public with sharing class EECRM_SRV_ProjectsService {
         }
     }
 
-    public void save(List<EECRM_Project__c> projects){ 
+    public void save(List<EECRM_Project__c> projects){       
         fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork( new List<SObjectType>{EECRM_Project__c.sObjectType} );
         save(projects,uow);
-        uow.commitWork();        
+        commitWork(uow);     
     }
 
     public void save(EECRM_Project__c project,fflib_SObjectUnitOfWork uow){
@@ -34,20 +34,25 @@ public with sharing class EECRM_SRV_ProjectsService {
     }
 
     public void save(List<EECRM_Project__c> projects,fflib_SObjectUnitOfWork uow){
-        for(EECRM_Project__c project : projects){
-            if(project.ID == null){
-               uow.registerNew(project);
-            }else{
-               uow.registerDirty(project);  
-            }         
-        } 
+
+        try{
+            for(EECRM_Project__c project : projects){
+                if(project.ID == null){
+                   uow.registerNew(project);
+                }else{
+                   uow.registerDirty(project);  
+                }         
+            } 
+        }catch(Exception ex){
+            throw new EECRM_ServiceException('Exception occured during sObject\'s registration. Please see error messages.',ex);
+        }
     } 
 
     public void saveWithTasks(Map<EECRM_Project__c,List<EECRM_Reported_Task__c>> projectsWithTasks){        
         fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork( 
             new List<SObjectType>{EECRM_Project__c.sObjectType, EECRM_Reported_Task__c.sObjectType});
         saveWithTasks(projectsWithTasks,uow);
-        uow.commitWork();
+        commitWork(uow);          
     }
 
     public void saveWithTasks(Map<EECRM_Project__c,List<EECRM_Reported_Task__c>> projectsWithTasks,fflib_SObjectUnitOfWork uow){
@@ -55,15 +60,29 @@ public with sharing class EECRM_SRV_ProjectsService {
             return;
         }
 
-        for(EECRM_Project__c project : projectsWithTasks.keySet()){
-            save(project,uow);
-            for(EECRM_Reported_Task__c currentTask : projectsWithTasks.get(project)){
-                if(currentTask.ID == null){
-                    uow.registerNew(currentTask,EECRM_Reported_Task__c.Project__c,project);
-                }else{
-                    uow.registerDirty(currentTask); 
+        try{
+
+            for(EECRM_Project__c project : projectsWithTasks.keySet()){
+                save(project,uow);
+                for(EECRM_Reported_Task__c currentTask : projectsWithTasks.get(project)){
+                    if(currentTask.ID == null){
+                        uow.registerNew(currentTask,EECRM_Reported_Task__c.Project__c,project);
+                    }else{
+                        uow.registerDirty(currentTask); 
+                    }
                 }
             }
+
+        }catch(Exception ex){
+            throw new EECRM_ServiceException('Exception occured during sObject\'s registration. Please see error messages.',ex);
+        }
+    }
+
+    private void commitWork(fflib_SObjectUnitOfWork uow){
+        try{
+            uow.commitWork(); 
+        }catch(Exception ex){
+            throw new EECRM_ServiceException('Exception occured during commiting. Please see error messages.',ex);
         }
     }
 }

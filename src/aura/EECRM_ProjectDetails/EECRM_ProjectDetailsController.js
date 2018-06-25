@@ -26,5 +26,14 @@
 		var contacts = component.get("v.responsiblePersons");	
 		contacts.push(contact);		
 		component.set("v.responsiblePersons",contacts);
+	},
+
+	removeResponsiblePerson : function(component,event,helper){
+		var contactId = event.getSource().get("v.value");
+		var contacts = component.get("v.responsiblePersons");		
+		contacts = contacts.filter(function filterContacts(item) {
+			return item.Id != contactId;
+		});
+		component.set("v.responsiblePersons",contacts);
 	}
 })
