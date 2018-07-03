@@ -13,6 +13,7 @@
         <name>CustomLabels</name>
     </types>
     <types>
+        <members>*</members>
         <members>EECRM_Project__c</members>
         <members>EECRM_Reported_Task__c</members>
         <name>CustomObject</name>

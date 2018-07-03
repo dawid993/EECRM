@@ -1,4 +1,8 @@
 ({
+	doInit: function(component,event,helper){
+		helper.setInitialBudgetLimit(component);
+	},
+
 	handleStatusPicklistEvent: function (component, event, helper) {
 		switch (event.getParam("sObjectFieldName")) {
 			case "Category__c": {
@@ -8,6 +12,10 @@
 			case "Status__c": {
 				component.set("v.project.Status__c", event.getParam("picklistValue"));
 				break;
+			}
+			case "Priority__c":{
+				component.set("v.project.Priority__c", event.getParam("picklistValue"));
+				helper.setInitialBudgetLimit(component);
 			}
 		}
 	},
@@ -35,5 +43,11 @@
 			return item.Id != contactId;
 		});
 		component.set("v.responsiblePersons",contacts);
-	}
+	},
+
+	saveProject : function(component,event,helper){
+		var inputFieldNames = ["startDateInput","initialBudgetInput"];
+		helper.removeErrorClass(inputFieldNames,component);
+		helper.validateProject(component);
+	}	
 })

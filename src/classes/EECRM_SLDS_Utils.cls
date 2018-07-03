@@ -17,4 +17,15 @@ public class EECRM_SLDS_Utils {
         List<sObject> sObjects =  Database.query(query);       
         return sObjects;
     }
+
+    @AuraEnabled
+    public static Decimal getInitialBudgetLimit(String priority){
+        Decimal maxBudget = 0;
+        if(String.isNotBlank(priority)){  
+            EECRM_BudgetSettings__c budgetSetting = EECRM_BudgetSettings__c.getInstance(priority);
+            maxBudget = budgetSetting != null ? budgetSetting.Max_Budget__c : 0;
+        }
+        System.debug(maxBudget);
+        return maxBudget;
+    }
 }

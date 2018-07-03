@@ -1,2 +1,7 @@
 .THIS {
 }
+
+.THIS.errorMsg{
+    color: red;
+    background-color: aqua;
+}

@@ -1,3 +1,13 @@
 .THIS .hx{
     height : 245px;
 }
+
+.THIS .errorMsg{
+    margin-top: 9px;
+    display: block;
+    color:  rgb(194, 57, 52);    
+}
+
+.THIS .inActiveErrorMsg{
+    display: none;
+}
