@@ -42,7 +42,7 @@
                         <lightning:layoutItem size="7">
                             <lightning:input aura:id="initialBudgetInput" label="Initial Budget" type="number" value="{!v.project.Initial_Budget__c}" formatter="currency" step="0.01"
                                 required="true" />
-                            <p><lightning:formattedText aura:id="initialBudgetInput-error" class="slds-form-element__help errorMsg" 
+                            <p><lightning:formattedText aura:id="initialBudgetInput-error" class="slds-form-element__help errorMsg inActiveErrorMsg" 
                                 value="{!'You exceeded maximum budget for this project priority, max is ' + v.maxBudget}" /></p>
                         </lightning:layoutItem>
                     </lightning:layoutItem>
@@ -62,7 +62,6 @@
             </lightning:layoutItem>
             <lightning:layoutItem size="6" class="slds-box slds-theme_default slds-m-top_small">
                 <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">Responsibility</legend>
-
                 <aura:iteration items="{!v.responsiblePersons}" var="contact">
                     <lightning:layout multipleRows="true" class="slds-m-top_small">
                         <lightning:layoutItem class="slds-border_bottom" size="8">
@@ -92,13 +91,11 @@
                 class="slds-modal slds-fade-in-open">
                 <div class="slds-modal__container">
                     <header class="slds-modal__header">
-                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Modal Header</h2>
-                        <p class="slds-m-top_x-small">Here’s a tagline if you need it. It is allowed to extend across mulitple lines, so I’m making up
-                            content to show that to you. It is allowed to
-                            <a href="javascript:void(0);">contain links or be a link</a>.</p>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Responsible contacts</h2>
+                        <p class="slds-m-top_x-small">Please add persons which are responsible for project.</p>
                     </header>
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                        <c:EECRM_LookupDialog sObjectType="Contact" />
+                        <c:EECRM_LookupDialog sObjectType="Contact" filterSObjects="{!v.responsiblePersons}"/>
                     </div>
                     <footer class="slds-modal__footer">
                         <lightning:button variant="brand" label="Save" onclick="{!c.closeResponsiblePersonDialog}" />

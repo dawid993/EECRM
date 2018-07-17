@@ -1,12 +1,6 @@
 ({
 	doInit : function(component, event, helper) {
-		var action = component.get("c.getSObjects");
-		action.setParams({"limitValue":"10","offsetValue":"0","sObjectType":component.get("v.sObjectType")});
-		action.setCallback(this,function(response){				
-			component.set("v.contacts", response.getReturnValue());
-		});
-
-		$A.enqueueAction(action);
+		helper.getSObjectFromSfdc(component);
 	},
 
 	chooseContact : function(component, event, helper){
@@ -20,6 +14,8 @@
 				"sObjectType" : component.get("v.sObjectType"),
 				"sObjectEntity" : component.get("v.contacts")[index]
 			});
-		sObjectEvent.fire();
+		var filterSObjects = component.get("v.filterSObjects");		
+		sObjectEvent.fire(); 
+		helper.getSObjectFromSfdc(component);
 	} 
 })

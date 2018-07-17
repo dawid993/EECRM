@@ -1,7 +1,10 @@
 <aura:component controller="EECRM_SLDS_Utils">
+    <aura:attribute name="currentPage" type="Integer" default="1"/>
+    <aura:attribute name="pageLimit" type="Integer" default="10"/>
 
     <aura:attribute name="sObjectType" type="String" required="true"/>
     <aura:attribute name="contacts" type="sObject[]"/>
+    <aura:attribute name="filterSObjects" type="sObject[]"/>
     <aura:registerEvent name="sendSObjectEntity" type="c:EECRM_SendSObjectEvent"/>     
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 

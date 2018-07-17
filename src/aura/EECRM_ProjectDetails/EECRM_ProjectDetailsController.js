@@ -25,14 +25,15 @@
 	},
 
 	closeResponsiblePersonDialog : function (component, event, helper) {
-		component.set("v.showResponsiblePersonDialog", false);		
-		console.log("test");
+		component.set("v.showResponsiblePersonDialog", false);	
+		
 	},
 
 	handleLookupSObject: function(component, event, helper){
 		var contact = event.getParam("sObjectEntity");
 		var contacts = component.get("v.responsiblePersons");	
 		contacts.push(contact);		
+		console.log(contact);
 		component.set("v.responsiblePersons",contacts);
 	},
 

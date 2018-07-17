@@ -12,8 +12,11 @@ public class EECRM_SLDS_Utils {
     }
 
     @AuraEnabled
-    public static List<Contact> getSObjects(Integer limitValue,Integer offsetValue,String sObjectType){
-        String query = 'SELECT Id,Name FROM '+ SObjectType + ' '+' LIMIT '+limitValue+' OFFSET '+offsetValue;        
+    public static List<Contact> getSObjects(Integer limitValue,Integer offsetValue,String sObjectType,List<String> filterByIds){
+        String query = 'SELECT Id,Name FROM '+ SObjectType 
+        + (!filterByIds.isEmpty() ? ' WHERE ID NOT IN :filterByIds' : '')
+        + ' LIMIT '+limitValue+' OFFSET '+offsetValue;   
+        System.debug(query);     
         List<sObject> sObjects =  Database.query(query);       
         return sObjects;
     }

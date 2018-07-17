@@ -1,7 +1,7 @@
 .THIS {
 }
 
-.THIS.errorMsg{
+.THIS span:hover{
     color: red;
-    background-color: aqua;
+    font-size: 14px;    
 }
