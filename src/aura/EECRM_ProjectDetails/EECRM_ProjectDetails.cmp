@@ -97,8 +97,7 @@
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
                         <c:EECRM_LookupDialog sObjectType="Contact" filterSObjects="{!v.responsiblePersons}"/>
                     </div>
-                    <footer class="slds-modal__footer">
-                        <lightning:button variant="brand" label="Save" onclick="{!c.closeResponsiblePersonDialog}" />
+                    <footer class="slds-modal__footer">                      
                         <lightning:button variant="brand" label="Close" onclick="{!c.closeResponsiblePersonDialog}" />
                     </footer>
                 </div>

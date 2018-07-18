@@ -1,23 +1,38 @@
 <aura:component controller="EECRM_SLDS_Utils">
-    <aura:attribute name="currentPage" type="Integer" default="1"/>
-    <aura:attribute name="pageLimit" type="Integer" default="10"/>
+    <aura:attribute name="currentPage" type="Integer" default="1" />
+    <aura:attribute name="pageLimit" type="Integer" default="10" />
 
-    <aura:attribute name="sObjectType" type="String" required="true"/>
-    <aura:attribute name="contacts" type="sObject[]"/>
-    <aura:attribute name="filterSObjects" type="sObject[]"/>
-    <aura:registerEvent name="sendSObjectEntity" type="c:EECRM_SendSObjectEvent"/>     
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="sObjectType" type="String" required="true" />
+    <aura:attribute name="contacts" type="sObject[]" />
+    <aura:attribute name="filterSObjects" type="sObject[]" />
+    <aura:attribute name="totalPages" type="Integer"/>
 
-    <ul class="slds-has-dividers_around-space">              
-        <aura:iteration items="{!v.contacts}" var="ct" indexVar="i">
-            <li class="slds-item" onclick="{!c.chooseContact}" data-index="{!i}">
-               <lightning:layout >
-                    <lightning:layoutItem >
-                            <lightning:icon iconName="standard:avatar" alternativeText="Project"/>
-                            <span class="slds-m-top_x-small slds-m-left_small">{!ct.Name}</span>
-                        </lightning:layoutItem>                    
-               </lightning:layout>
-            </li>
-        </aura:iteration>
-    </ul>
+    <aura:registerEvent name="sendSObjectEntity" type="c:EECRM_SendSObjectEvent" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <lightning:layout multipleRows="true">
+        <lightning:layoutItem size="12">
+            <ul class="slds-has-dividers_around-space">
+                <aura:iteration items="{!v.contacts}" var="ct" indexVar="i">
+                    <li class="slds-item" onclick="{!c.chooseContact}" data-index="{!i}">
+                        <lightning:layout>
+                            <lightning:layoutItem>
+                                <lightning:icon iconName="standard:avatar" alternativeText="Project" />
+                                <span class="slds-m-top_x-small slds-m-left_small">{!ct.Name}</span>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </li>
+                </aura:iteration>
+            </ul>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="4">
+            <lightning:button variant="base" label="Previous" title="Base action" class="slds-align_absolute-center" onclick="{!c.previousPage}" />
+        </lightning:layoutItem>
+        <lightning:layoutItem size="4" class="slds-align_absolute-center">
+                {!v.currentPage + '/' + v.totalPages}
+        </lightning:layoutItem>
+        <lightning:layoutItem size="4"> 
+            <lightning:button variant="base" label="Next" title="Base action" class="slds-align_absolute-center" onclick="{!c.nextPage}"/>
+        </lightning:layoutItem>
+    </lightning:layout>
 </aura:component>

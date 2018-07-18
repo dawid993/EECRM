@@ -17,5 +17,16 @@
 		var filterSObjects = component.get("v.filterSObjects");		
 		sObjectEvent.fire(); 
 		helper.getSObjectFromSfdc(component);
-	} 
+	},
+	
+	previousPage : function(component,event,helper){
+		component.set('v.currentPage',component.get('v.currentPage')-1);
+		helper.getSObjectFromSfdc(component);
+	},
+
+	nextPage : function(component,event,helper){
+		component.set('v.currentPage',component.get('v.currentPage')+1);
+		helper.getSObjectFromSfdc(component);
+	},
+
 })

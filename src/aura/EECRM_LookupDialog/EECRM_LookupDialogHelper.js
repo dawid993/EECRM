@@ -13,7 +13,7 @@
 			filterIds.push(element.Id);			
 		});		
 
-		var action = component.get("c.getSObjects");
+		var action = component.get("c.getSObjectsWrapper");
 		action.setParams({
 			"limitValue":pageLimit,
 			"offsetValue":offsetValue,
@@ -21,10 +21,14 @@
 			"filterByIds":filterIds
 		});
 
-		action.setCallback(this,function(response){				
-			component.set("v.contacts", response.getReturnValue());
+		action.setCallback(this,function(response){		
+			var wrapperFromSfdc = response.getReturnValue();			
+			var totalPages =  parseInt(wrapperFromSfdc.totalRecords / pageLimit);			
+			totalPages += wrapperFromSfdc.totalRecords % pageLimit != 0 ? 1 : 0;			
+			component.set("v.totalPages",totalPages);
+			component.set("v.contacts", wrapperFromSfdc.filteredSObjectList);
 		});
 
-		$A.enqueueAction(action);
-	}
+		$A.enqueueAction(action); 
+	}	
 })
