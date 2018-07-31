@@ -1,0 +1,12 @@
+<aura:component>
+    <ltng:require scripts="{!$Resource.Charts}" afterScriptsLoaded="{!c.myAction}"/>
+    <div class="slds-container--medium slds-container--center">
+        <!-- Doughnut Chart -->
+        <div class="chart-demo">
+            <h2 class="title">Chart.Js</h2>
+            <div>
+                <canvas class="myCanvas" id="doughnutChart" width="50" height="50"></canvas>
+            </div>
+        </div>
+    </div>
+</aura:component>

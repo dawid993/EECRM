@@ -26,9 +26,9 @@
             </aura:set>
             <c:EECRM_ProjectDetails project="{!v.project}"/>
         </lightning:tab>
-        <lightning:tab >
-             <aura:set attribute="label">Changes</aura:set>
-           
+        <lightning:tab>
+             <aura:set attribute="label">Finance/Forecast</aura:set>  
+             <c:EECRM_FinanceForecast/>         
         </lightning:tab>
       </lightning:tabSet>
     

@@ -1,89 +1,136 @@
 <aura:component controller="EECRM_SLDS_Utils">
     <aura:handler name="sendPicklistValue" event="c:PicklistValueProvider" action="{!c.handleStatusPicklistEvent}" />
     <aura:handler name="sendSObjectEntity" event="c:EECRM_SendSObjectEvent" action="{!c.handleLookupSObject}" />
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
     <aura:attribute name="projectStatus" type="String" />
-    <aura:attribute name="errorMessages" type="String[]"/>
+    <aura:attribute name="errorMessages" type="String[]" />
     <aura:attribute name="project" type="EECRM_Project__c" required="true" />
     <aura:attribute name="responsiblePersons" type="Contact[]" />
     <aura:attribute name="showResponsiblePersonDialog" type="Boolean" default="false" />
     <aura:attribute name="maxBudget" type="Decimal" />
 
+    <lightning:navigation aura:id="navigationService" />
+
+    <ltng:require scripts="{!$Resource.Charts}" afterScriptsLoaded="{!c.myAction}" />
+
     <form>
         <lightning:layout aura:id="project-form" multipleRows="true">
-            <lightning:layoutItem size="6" class="slds-box slds-theme_default slds-m-top_small">
-                <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">Basic info</legend>
-                <lightning:layout multipleRows="true">
-                    <lightning:layoutItem size="5" padding="around-small">
-                        <lightning:input label="Project Name" type="text" value="{!v.project.Project_Name__c}" required="true" />
-                    </lightning:layoutItem>
-                    <lightning:layoutItem size="5" padding="around-small">
-                        <lightning:input label="Mail box" type="email" value="{!v.project.Mailbox__c}" required="true" />
-                    </lightning:layoutItem>
-                    <lightning:layoutItem size="3" padding="around-small">
-                        <c:PicklistComponent sObjectName="EECRM_Project__c" sObjectFieldName="Category__c" fieldLabel="Category" />
-                    </lightning:layoutItem>
-                    <lightning:layoutItem size="3" padding="around-small">
-                        <c:PicklistComponent sObjectName="EECRM_Project__c" sObjectFieldName="Status__c" fieldLabel="Status" />
-                    </lightning:layoutItem>
-                    <lightning:layoutItem size="3" padding="around-small">
-                        <c:PicklistComponent sObjectName="EECRM_Project__c" sObjectFieldName="Priority__c" fieldLabel="Priority" />
-                    </lightning:layoutItem>
-                    <lightning:layoutItem size="4" padding="around-small">
-                        <lightning:input label="Planned start date" type="date" value="{!v.project.Planned_Start_Date__c}" required="true" />
-                    </lightning:layoutItem>
-                    <lightning:layoutItem size="4" padding="around-small">
-                        <lightning:input label="Start date" type="date" value="{!v.project.Start_Date__c}" aura:id="startDateInput"/>
-                        <p><lightning:formattedText aura:id="startDateInput-error" class="slds-form-element__help errorMsg inActiveErrorMsg" 
-                            value="Start date must be lower that Planned Date" /></p>
-                    </lightning:layoutItem>
-                    <lightning:layoutItem size="5" padding="around-small">
-                        <lightning:layoutItem size="7">
-                            <lightning:input aura:id="initialBudgetInput" label="Initial Budget" type="number" value="{!v.project.Initial_Budget__c}" formatter="currency" step="0.01"
-                                required="true" />
-                            <p><lightning:formattedText aura:id="initialBudgetInput-error" class="slds-form-element__help errorMsg inActiveErrorMsg" 
-                                value="{!'You exceeded maximum budget for this project priority, max is ' + v.maxBudget}" /></p>
-                        </lightning:layoutItem>
-                    </lightning:layoutItem>
-                    <lightning:layoutItem size="12" padding="around-small">
-                        <lightning:input class="slds-m-top_medium" type="checkbox" label="Validated" name="project-validated" value="{!v.project.Validated__c}"
-                            required="true" />
-                    </lightning:layoutItem>
-                </lightning:layout>
-            </lightning:layoutItem>
-            <lightning:layoutItem size="4" class="slds-box slds-theme_default slds-m-left_small slds-m-top_small hx">
-                <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">About</legend>
-                <lightning:layout multipleRows="true" verticalAlign="stretch" class="hx">
-                    <lightning:layoutItem size="12" padding="around-small">
-                        <lightning:textarea label="Description" name="project-name" value="{!v.project.Description__c}" required="true" />
-                    </lightning:layoutItem>
-                </lightning:layout>
-            </lightning:layoutItem>
-            <lightning:layoutItem size="6" class="slds-box slds-theme_default slds-m-top_small">
-                <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">Responsibility</legend>
-                <aura:iteration items="{!v.responsiblePersons}" var="contact">
-                    <lightning:layout multipleRows="true" class="slds-m-top_small">
-                        <lightning:layoutItem class="slds-border_bottom" size="8">
-                            <lightning:icon iconName="standard:avatar" alternativeText="Project" />
-                            <span class="slds-m-top_x-small slds-m-left_small">{!contact.Name}</span>
-                        </lightning:layoutItem>
-                        <lightning:layoutItem class="slds-border_bottom" size="4">
-                            <lightning:button value="{!contact.Id}" variant="base" label="Remove" onclick="{!c.removeResponsiblePerson}" class="slds-float_right"
-                            />
-                        </lightning:layoutItem>
-                    </lightning:layout>
-                </aura:iteration>
-
-                <lightning:layout multipleRows="true" class="slds-m-top_small">
-                    <lightning:button variant="brand" label="Add Responsible Person" onclick="{!c.showResponsiblePersonDialog}" />
-                </lightning:layout>
-            </lightning:layoutItem>
             <lightning:layoutItem size="12" class="slds-m-top_small">
                 <lightning:layoutItem class="slds-align_absolute-center">
                     <lightning:button variant="brand" label="Save" onclick="{!c.saveProject}" />
                     <lightning:button label="Cancel" onclick="{!c.showResponsiblePersonDialog}" />
                 </lightning:layoutItem>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="6">
+                <lightning:layout multipleRows="true">
+                    <lightning:layoutItem class="slds-box slds-theme_default slds-m-top_small" size="12">
+                        <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">Basic info</legend>
+                        <lightning:layout multipleRows="true">
+                            <lightning:layoutItem size="5" padding="around-small">
+                                <lightning:input label="Project Name" type="text" value="{!v.project.Project_Name__c}" required="true" />
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="5" padding="around-small">
+                                <lightning:input label="Mail box" type="email" value="{!v.project.Mailbox__c}" required="true" />
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="3" padding="around-small">
+                                <c:PicklistComponent sObjectName="EECRM_Project__c" sObjectFieldName="Category__c" fieldLabel="Category" />
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="3" padding="around-small">
+                                <c:PicklistComponent sObjectName="EECRM_Project__c" sObjectFieldName="Status__c" fieldLabel="Status" />
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="3" padding="around-small">
+                                <c:PicklistComponent sObjectName="EECRM_Project__c" sObjectFieldName="Priority__c" fieldLabel="Priority" />
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="4" padding="around-small">
+                                <lightning:input label="Planned start date" type="date" value="{!v.project.Planned_Start_Date__c}" required="true" />
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="4" padding="around-small">
+                                <lightning:input label="Start date" type="date" value="{!v.project.Start_Date__c}" aura:id="startDateInput" />
+                                <p>
+                                    <lightning:formattedText aura:id="startDateInput-error" class="slds-form-element__help errorMsg inActiveErrorMsg" value="Start date must be lower that Planned Date"
+                                    />
+                                </p>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="4" padding="around-small">
+                                <lightning:layoutItem size="7">
+                                    <lightning:input aura:id="initialBudgetInput" label="Initial Budget" type="number" value="{!v.project.Initial_Budget__c}"
+                                        formatter="currency" step="0.01" required="true" />
+                                    <p>
+                                        <lightning:formattedText aura:id="initialBudgetInput-error" class="slds-form-element__help errorMsg inActiveErrorMsg" value="{!'You exceeded maximum budget for this project priority, max is ' + v.maxBudget}"
+                                        />
+                                    </p>
+                                </lightning:layoutItem>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="3" padding="around-small">
+                                <lightning:input aura:id="plannedBudgetInput" label="Planned Budget" type="number" value="{!v.project.Planned_Cost__c}" formatter="currency"
+                                    step="0.01" required="true" />
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="3" padding="around-small">
+                                <lightning:input aura:id="actualBudgetInput" label="Actual Cost" type="number" value="{!v.project.Actual_Cost__c}" formatter="currency"
+                                    step="0.01" required="true" />
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="3" padding="around-small">
+                                <lightning:input aura:id="actualBudgetInput" label="Planned hours effort" type="number" value="{!v.project.Planned_hours_effor__c}"
+                                    step="1" required="true" />
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="4" padding="around-small">
+                                <lightning:input aura:id="actualBudgetInput" label="Actual hours effort" type="number" value="{!v.project.Actual_hours_effort__c}"
+                                    step="1" required="true" />
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="12" padding="around-small">
+                                <lightning:input class="slds-m-top_medium" type="checkbox" label="Validated" name="project-validated" value="{!v.project.Validated__c}"
+                                    required="true" />
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12" class="slds-box slds-theme_default slds-m-top_small">
+                        <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">About</legend>
+                        <lightning:layout multipleRows="true" verticalAlign="stretch">
+                            <lightning:layoutItem size="10" padding="around-small">
+                                <lightning:textarea label="Description" name="project-name" value="{!v.project.Description__c}" required="true" />
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="6">
+                <lightning:layout multipleRows="true">
+                    <lightning:layoutItem size="12">
+                        <lightning:layout multipleRows="true" class="slds-container--x-large slds-grid_vertical-stretch">
+                            <lightning:layoutItem size="10" class="slds-box slds-theme_default slds-m-left_small slds-m-top_small slds-container--large">
+                                <div class="slds-container--small slds-container--center slds-grid_vertical-align-end">
+                                    <div class="chart-demo">
+                                        <h2 class="title">Chart.Js</h2>
+                                        <div>
+                                            <canvas class="myCanvas" id="doughnutChart" width="50" height="50"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem class="slds-box slds-theme_default slds-m-top_small slds-m-left_small " size="10">
+                                <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">Responsibility</legend>
+                                <aura:iteration items="{!v.responsiblePersons}" var="contact">
+                                    <lightning:layout multipleRows="true" class="slds-m-top_small">
+                                        <lightning:layoutItem class="slds-border_bottom" size="8">
+                                            <lightning:icon iconName="standard:avatar" alternativeText="Project" />
+                                            <span class="slds-m-top_x-small slds-m-left_small">
+                                                <a data-contactId="{!contact.Id}" onclick="{!c.openContactPage}">{!contact.Name}</a>
+                                            </span>
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem class="slds-border_bottom" size="4">
+                                            <lightning:button value="{!contact.Id}" variant="base" label="Remove" onclick="{!c.removeResponsiblePerson}" class="slds-float_right"
+                                            />
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                </aura:iteration>
+                                <lightning:layout multipleRows="true" class="slds-m-top_small">
+                                    <lightning:button variant="brand" label="Add Responsible Person" onclick="{!c.showResponsiblePersonDialog}" />
+                                </lightning:layout>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </lightning:layoutItem>
+                </lightning:layout>
             </lightning:layoutItem>
         </lightning:layout>
         <aura:if isTrue="{!v.showResponsiblePersonDialog}">
@@ -95,9 +142,9 @@
                         <p class="slds-m-top_x-small">Please add persons which are responsible for project.</p>
                     </header>
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                        <c:EECRM_LookupDialog sObjectType="Contact" filterSObjects="{!v.responsiblePersons}"/>
+                        <c:EECRM_LookupDialog sObjectType="Contact" filterSObjects="{!v.responsiblePersons}" />
                     </div>
-                    <footer class="slds-modal__footer">                      
+                    <footer class="slds-modal__footer">
                         <lightning:button variant="brand" label="Close" onclick="{!c.closeResponsiblePersonDialog}" />
                     </footer>
                 </div>

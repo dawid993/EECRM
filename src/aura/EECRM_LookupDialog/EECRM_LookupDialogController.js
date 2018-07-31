@@ -28,5 +28,4 @@
 		component.set('v.currentPage',component.get('v.currentPage')+1);
 		helper.getSObjectFromSfdc(component);
 	},
-
 })
