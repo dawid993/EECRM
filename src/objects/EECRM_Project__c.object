@@ -53,7 +53,7 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
-        <fullName>Actual__c</fullName>
+        <fullName>Actual_Cost__c</fullName>
         <externalId>false</externalId>
         <label>Actual Cost</label>
         <precision>18</precision>

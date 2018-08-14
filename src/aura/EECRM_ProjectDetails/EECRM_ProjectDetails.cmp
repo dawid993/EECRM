@@ -9,10 +9,11 @@
     <aura:attribute name="responsiblePersons" type="Contact[]" />
     <aura:attribute name="showResponsiblePersonDialog" type="Boolean" default="false" />
     <aura:attribute name="maxBudget" type="Decimal" />
+    <aura:attribute name="costChart" type="Map" />
 
     <lightning:navigation aura:id="navigationService" />
 
-    <ltng:require scripts="{!$Resource.Charts}" afterScriptsLoaded="{!c.myAction}" />
+    <ltng:require scripts="{!$Resource.Charts}" />
 
     <form>
         <lightning:layout aura:id="project-form" multipleRows="true">
@@ -55,8 +56,8 @@
                             <lightning:layoutItem size="4" padding="around-small">
                                 <lightning:layoutItem size="7">
                                     <lightning:input aura:id="initialBudgetInput" label="Initial Budget" type="number" value="{!v.project.Initial_Budget__c}"
-                                        formatter="currency" step="0.01" required="true" />
-                                    <p>
+                                        formatter="currency" step="0.01" required="true" onchange="{!c.drawCostDiagram}"/>
+                                     <p>
                                         <lightning:formattedText aura:id="initialBudgetInput-error" class="slds-form-element__help errorMsg inActiveErrorMsg" value="{!'You exceeded maximum budget for this project priority, max is ' + v.maxBudget}"
                                         />
                                     </p>
@@ -64,11 +65,11 @@
                             </lightning:layoutItem>
                             <lightning:layoutItem size="3" padding="around-small">
                                 <lightning:input aura:id="plannedBudgetInput" label="Planned Budget" type="number" value="{!v.project.Planned_Cost__c}" formatter="currency"
-                                    step="0.01" required="true" />
+                                    step="0.01" required="true" onchange="{!c.drawCostDiagram}"/>
                             </lightning:layoutItem>
                             <lightning:layoutItem size="3" padding="around-small">
                                 <lightning:input aura:id="actualBudgetInput" label="Actual Cost" type="number" value="{!v.project.Actual_Cost__c}" formatter="currency"
-                                    step="0.01" required="true" />
+                                    step="0.01" required="true" onchange="{!c.drawCostDiagram}"/>
                             </lightning:layoutItem>
                             <lightning:layoutItem size="3" padding="around-small">
                                 <lightning:input aura:id="actualBudgetInput" label="Planned hours effort" type="number" value="{!v.project.Planned_hours_effor__c}"
@@ -80,7 +81,7 @@
                             </lightning:layoutItem>
                             <lightning:layoutItem size="12" padding="around-small">
                                 <lightning:input class="slds-m-top_medium" type="checkbox" label="Validated" name="project-validated" value="{!v.project.Validated__c}"
-                                    required="true" />
+                                    required="true" onchange="{!c.drawCostDiagram}" />
                             </lightning:layoutItem>
                         </lightning:layout>
                     </lightning:layoutItem>
@@ -101,14 +102,14 @@
                             <lightning:layoutItem size="10" class="slds-box slds-theme_default slds-m-left_small slds-m-top_small slds-container--large">
                                 <div class="slds-container--small slds-container--center slds-grid_vertical-align-end">
                                     <div class="chart-demo">
-                                        <h2 class="title">Chart.Js</h2>
-                                        <div>
-                                            <canvas class="myCanvas" id="doughnutChart" width="50" height="50"></canvas>
+                                        <h2 class="title">Costs</h2>
+                                        <div id="canvas">
+                                            <canvas id="doughnutChart" aura:id="doughnutChart" width="50" height="50"></canvas>
                                         </div>
                                     </div>
                                 </div>
                             </lightning:layoutItem>
-                            <lightning:layoutItem class="slds-box slds-theme_default slds-m-top_small slds-m-left_small " size="10">
+                            <lightning:layoutItem class="slds-box slds-theme_default slds-m-top_small slds-m-left_small" size="10">
                                 <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">Responsibility</legend>
                                 <aura:iteration items="{!v.responsiblePersons}" var="contact">
                                     <lightning:layout multipleRows="true" class="slds-m-top_small">

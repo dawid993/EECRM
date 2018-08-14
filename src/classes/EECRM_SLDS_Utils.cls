@@ -34,6 +34,28 @@ public class EECRM_SLDS_Utils {
         return maxBudget;
     }
 
+    @AuraEnabled
+    public static EECRM_Project__c getProject(Id projectId){
+        fflib_QueryFactory queryFactory = new fflib_QueryFactory(Schema.getGlobalDescribe().get('EECRM_Project__c'));
+        List<String> fields = new List<String>{'Actual_Cost__c','Actual_hours_effort__c','Category__c','Checksum__c','CreatedById','Description__c','Name'
+            ,'Initial_Budget__c','LastModifiedById','Mailbox__c','OwnerId','Planned_Cost__c','Planned_hours_effor__c','Planned_Start_Date__c','Priority__c'
+            ,'Project_Name__c','Responsible_Person__c','Start_Date__c','Status__c','Validated__c'};
+        queryFactory.selectFields(fields);
+        queryFactory.setCondition('Id = :projectId');
+        System.debug(projectId);
+        EECRM_Project__c project = Database.query(queryFactory.toSOQL());  
+        System.debug(project+' '+projectId);
+        return project; 
+    }
+
+    @AuraEnabled
+    public static EECRM_Project__c save(EECRM_Project__c project){
+        System.debug(project);
+        upsert project;
+         System.debug(project);
+        return getProject(project.Id);
+    }
+
     private static List<Contact> getSObjects(Integer limitValue,Integer offsetValue,String sObjectType,List<String> filterByIds){
          String query = 'SELECT Id,Name FROM '+ SObjectType 
         + (!filterByIds.isEmpty() ? ' WHERE ID NOT IN :filterByIds' : '')

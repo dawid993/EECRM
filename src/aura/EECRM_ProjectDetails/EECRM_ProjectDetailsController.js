@@ -37,7 +37,7 @@
 		component.set("v.responsiblePersons",contacts);
 	},
 
-	removeResponsiblePerson : function(component,event,helper){
+	removeResponsiblePerson : function(component,event,helper){        
 		var contactId = event.getSource().get("v.value");
 		var contacts = component.get("v.responsiblePersons");		
 		contacts = contacts.filter(function filterContacts(item) {
@@ -49,7 +49,22 @@
 	saveProject : function(component,event,helper){
 		var inputFieldNames = ["startDateInput","initialBudgetInput"];
 		helper.removeErrorClass(inputFieldNames,component);
-		helper.validateProject(component);
+		var valid = helper.validateProject(component);		
+		if(valid){			
+			var project = component.get("v.project");
+			var action = component.get("c.save");
+			action.setParams({
+				"project":project
+			});
+	
+			action.setCallback(this,function(response){			
+				var resultFromSFDC = response.getReturnValue();	
+				component.set('v.project',resultFromSFDC);				
+			});
+	
+			$A.enqueueAction(action);
+		}
+
 	},
 
 	openContactPage : function(component,event,helper){
@@ -60,7 +75,7 @@
 				attributes: {
 					objectApiName:'Contact',
 					actionName:'view',
-					recordId : contactId
+					recordId : contactId 
 				},
 			};			
 			var navigationService = component.find("navigationService");
@@ -68,43 +83,19 @@
 		}		
 	},
 
-	myAction: function (component, event, helper) {
-		var ctx = document.getElementById("doughnutChart");
-		var myChart = new Chart(ctx, {
-			type: 'bar',
-			data: {
-				labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-				datasets: [{
-					label: '# of Votes',
-					data: [12, 19, 3, 5, 2, 3],
-					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)'
-					],
-					borderColor: [
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
-					borderWidth: 1
-				}]
-			},
-			options: {
-				scales: {
-					yAxes: [{
-						ticks: {
-							beginAtZero: true
-						}
-					}]
-				}
-			}
-		});
-	}
+	drawCostDiagram : function (component, event, helper) {	      
+		var currentDiagram = document.getElementById("doughnutChart");         
+        var initialBudget = component.get("v.project.Initial_Budget__c");
+		var plannedCost = component.get("v.project.Planned_Cost__c");
+		var actualCost = component.get("v.project.Actual_Cost__c");
+        
+		if(currentDiagram){
+			currentDiagram.remove(); 
+		} 
+		
+		document.getElementById("canvas").innerHTML = "<canvas id='doughnutChart' width='50' height='50'></canvas>";
+		currentDiagram = document.getElementById("doughnutChart"); 
+		helper.createCanvasCostDiagram(currentDiagram,initialBudget,plannedCost,actualCost);        
+       
+	} 	
 })
