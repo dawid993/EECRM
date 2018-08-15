@@ -94,8 +94,7 @@ public class EECRM_Projects extends fflib_SObjectDomain {
         budgetChange.EECRM_Project_ref__c = projectId;
         budgetChange.New_Value__c = newValue;
         budgetChange.Old_Value__c = oldValue;
-        budgetChange.Budget_Type__c = type;
-
+        budgetChange.Budget_Type__c = type;  
         return budgetChange;
     }
 

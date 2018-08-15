@@ -13,7 +13,7 @@
 
     <lightning:navigation aura:id="navigationService" />
 
-    <ltng:require scripts="{!$Resource.Charts}" />
+    <ltng:require scripts="{!$Resource.Charts}" afterScriptsLoaded="{!c.drawCostDiagram}" />
 
     <form>
         <lightning:layout aura:id="project-form" multipleRows="true">

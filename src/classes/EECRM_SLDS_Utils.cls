@@ -49,11 +49,22 @@ public class EECRM_SLDS_Utils {
     }
 
     @AuraEnabled
-    public static EECRM_Project__c save(EECRM_Project__c project){
-        System.debug(project);
-        upsert project;
-         System.debug(project);
+    public static EECRM_Project__c save(EECRM_Project__c project){        
+        upsert project;        
         return getProject(project.Id);
+    }
+    
+    @AuraEnabled
+    public static List<EECRM_Project_Budget_Change__c> getBudgetChangesForProject(ID projectId,Date fromDate,Date toDate){
+    	Schema.SObjectType budgedChangeType = Schema.getGlobalDescribe().get('EECRM_Project_Budget_Change__c');
+    	fflib_QueryFactory queryFactory = new fflib_QueryFactory(budgedChangeType);
+    	List<String> fields = new List<String>{'Budget_Type__c','CreatedById','EECRM_Project_ref__c','LastModifiedById','New_Value__c',
+    		'Old_Value__c','OwnerId','Name','CreatedDate'};
+    	queryFactory.selectFields(fields);
+        queryFactory.setCondition('EECRM_Project_ref__c = :projectId AND DAY_ONLY(CreatedDate) >= :fromDate AND DAY_ONLY(CreatedDate) <= :toDate');
+        queryFactory.addOrdering(budgedChangeType.getDescribe().fields.getMap().get('CreatedDate'),fflib_QueryFactory.SortOrder.ASCENDING);        
+        List<EECRM_Project_Budget_Change__c> budgetChanges = Database.query(queryFactory.toSOQL());
+        return budgetChanges;
     }
 
     private static List<Contact> getSObjects(Integer limitValue,Integer offsetValue,String sObjectType,List<String> filterByIds){

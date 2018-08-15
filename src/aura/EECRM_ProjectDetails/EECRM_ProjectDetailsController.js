@@ -58,8 +58,10 @@
 			});
 	
 			action.setCallback(this,function(response){			
-				var resultFromSFDC = response.getReturnValue();	
-				component.set('v.project',resultFromSFDC);				
+				if(response.getState() == 'SUCCESS'){
+					var resultFromSFDC = response.getReturnValue();	
+					component.set('v.project',resultFromSFDC);	
+				}							
 			});
 	
 			$A.enqueueAction(action);
@@ -95,7 +97,6 @@
 		
 		document.getElementById("canvas").innerHTML = "<canvas id='doughnutChart' width='50' height='50'></canvas>";
 		currentDiagram = document.getElementById("doughnutChart"); 
-		helper.createCanvasCostDiagram(currentDiagram,initialBudget,plannedCost,actualCost);        
-       
+		helper.createCanvasCostDiagram(currentDiagram,initialBudget,plannedCost,actualCost);
 	} 	
 })
