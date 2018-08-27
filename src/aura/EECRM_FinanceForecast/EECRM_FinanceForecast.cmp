@@ -1,4 +1,4 @@
-<aura:component controller="EECRM_SLDS_Utils">
+<aura:component controller="EECRM_SLDS_FinanceForecastController">
 	<aura:attribute name="project" type="EECRM_Project__c" required="true"/>
     <ltng:require scripts="{!$Resource.Charts}" afterScriptsLoaded="{!c.drawBudgetChangesDiagram}"/>
     <div class="slds-container--medium">

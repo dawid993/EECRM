@@ -112,27 +112,44 @@
     	return budgetByType;    	
     },
     
-    createXaxisForBudget : function(budgets){
+    createXaxisForBudget : function(budgets,beforeFromDateValue,currentMonth){    	
     	const X_AXIS_LENGTH = 12;
     	var xAxis = new Array(X_AXIS_LENGTH);
-    	xAxis.fill(null);    	
-    	budgets.forEach(element => {
-    		var createdDate = new Date(element.CreatedDate);
-    		xAxis[createdDate.getMonth()] = element.New_Value__c;
-    	});
     	
-    	console.log(budgets);
+    	console.log(currentMonth);
+    	if(!budgets.length){
+    		this.fillXAxisWith(xAxis,beforeFromDateValue,currentMonth,X_AXIS_LENGTH);
+    		return xAxis;
+    	}    	    	
+    	xAxis.fill(null);  
+    	
+    	budgets.forEach(element => {    		
+    		var createdDate = new Date(element.Change_Date__c);
+    		xAxis[createdDate.getMonth()] = element.New_Value__c;
+    	});    	
+    	
     	var lastValue = budgets[budgets.length-1].New_Value__c;
     	
+    	this.fillXAxisWith(xAxis,beforeFromDateValue,currentMonth,X_AXIS_LENGTH);
+    	console.log(lastValue);
     	for(var i = X_AXIS_LENGTH-1;i>=0;i--){
-    		if(xAxis[i] != null && xAxis[i] != lastValue){
-    			lastValue = xAxis[i];
+    		lastValue = (xAxis[i] != null && xAxis[i] != lastValue) ? xAxis[i] : lastValue;  	
+    		if(i <= currentMonth){
+    			xAxis[i] = lastValue;
     		}
-    		
-    		xAxis[i] = lastValue;
     	}
     	
-    	return xAxis;
-    	
+    	return xAxis;    	
     },    
+    
+    isDateBetween : function(fromDate,toDate,currentDate){
+    	return (fromDate.getTime() <= currentDate.getTime()) && (toDate.getTime() >= currentDate.getTime());
+    },
+    
+    fillXAxisWith : function(xAxis,beforeFromDateValue,currentMonth,X_AXIS_LENGTH ){
+    	var i = 0; 
+    	while(xAxis[i] == null && i < X_AXIS_LENGTH && i <= currentMonth ){
+    		xAxis[i++] = beforeFromDateValue;
+    	}    	
+    }
 })
