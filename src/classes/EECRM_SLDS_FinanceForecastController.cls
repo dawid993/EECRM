@@ -19,16 +19,15 @@ public with sharing class EECRM_SLDS_FinanceForecastController {
     	BudgetChangangeWrapper wrapper = new BudgetChangangeWrapper();
     	try{
     		Date fromDate = Date.valueOf(fromDateString);
-    		Date toDate = Date.valueOf(toDateString);	
-    		System.debug(fromDate+' '+toDate);
-    		System.debug(fromDateString+' '+toDateString);
+    		Date toDate = Date.valueOf(toDateString);	    		
     		wrapper.budgetChanges = getBudgetChangesForProject(projectId,fromDate,toDate);    		
     		wrapper.initialValueBeforeFromDate = getLastValueForBudgetChangeBeforeDate(projectId,fromDate,
     			EECRM_UTL_GeneralUtils.BUDGET_TYPE_INITIAL);
     		wrapper.plannedValueBeforeFromDate = getLastValueForBudgetChangeBeforeDate(projectId,fromDate,
     			EECRM_UTL_GeneralUtils.BUDGET_TYPE_PLANNED);
     		wrapper.actualValueBeforeFromDate = getLastValueForBudgetChangeBeforeDate(projectId,fromDate,
-    			EECRM_UTL_GeneralUtils.BUDGET_TYPE_ACTUAL);      		 
+    			EECRM_UTL_GeneralUtils.BUDGET_TYPE_ACTUAL); 
+    			     		 
     		return wrapper;
     	}catch(QueryException ex){
     		throw new EECRM_SLDS_RequestException('Exception in retrieving data.',ex);

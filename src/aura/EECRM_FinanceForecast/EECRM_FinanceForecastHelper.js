@@ -1,4 +1,30 @@
 ({
+	drawBudgetChangeDiagram : function(responseData,fromDate,toDate){
+		var wrapperFromSFDC = responseData.getReturnValue();
+		var currentDate = new Date();		
+		var currentMonth = this.isDateBetween(fromDate,toDate,currentDate) ? currentDate.getMonth() : 100;		
+		
+		if(wrapperFromSFDC){
+			var labels = this.createLabels(fromDate,toDate);				
+			var budgetByType = this.groupBudgetByTypes(wrapperFromSFDC.budgetChanges);	
+			
+			var initialBudgetXaxis = this.createXaxisForBudget(budgetByType.get('Initial')
+					,wrapperFromSFDC.initialValueBeforeFromDate						
+					,currentMonth);
+			
+			var plannedBudgetXaxis = this.createXaxisForBudget(budgetByType.get('Planned')
+					,wrapperFromSFDC.plannedValueBeforeFromDate						
+					,currentMonth);
+			
+			var actualBudgetXaxis = this.createXaxisForBudget(budgetByType.get('Actual')
+					,wrapperFromSFDC.actualValueBeforeFromDate						
+					,currentMonth);		
+			
+			var canvas = document.getElementById('budgetChangeChart');
+			this.createBudgetChangeDiagram(canvas,initialBudgetXaxis,plannedBudgetXaxis,actualBudgetXaxis,labels);
+		}
+	},
+	
 	createBudgetChangeDiagram : function(canvasElement,initialBudgetChanges,plannedCostChanges,actualCostChanges,labels){
        var options = {
     	scales: {
@@ -61,8 +87,7 @@
 		      // notice the gap in the data and the spanGaps: false
 		      data: actualCostChanges,
 		      spanGaps: false,
-		    }
-		
+		    }		
 		  ]
 		};
 		
@@ -84,60 +109,52 @@
     	
     	return labels; 
     
-    },
-    
-    groupBudgetTypes : function(budgetChanges){
+    },   
+    groupBudgetByTypes : function(budgetChanges){
     	const INITIAL_BUDGET = 'Initial';
     	const PLANNED_BUDGET = 'Planned';
     	const ACTUAL_BUDGET = 'Actual';
     	
     	var budgetByType = new Map();
-    	budgetByType.set(INITIAL_BUDGET,[]);
-    	budgetByType.set(PLANNED_BUDGET,[]);
-    	budgetByType.set(ACTUAL_BUDGET,[]);
     	
-    	budgetChanges.forEach(element => {
-    		switch(element.Budget_Type__c){
-    			case INITIAL_BUDGET :
-    				budgetByType.get(INITIAL_BUDGET).push(element);
-    				break;
-    			case PLANNED_BUDGET :
-    				budgetByType.get(PLANNED_BUDGET).push(element);
-    				break;
-    			case ACTUAL_BUDGET :
-    				budgetByType.get(ACTUAL_BUDGET).push(element); 
-    		}
-    	});
+    	if(budgetChanges){
+	    	budgetByType.set(INITIAL_BUDGET,[]);
+	    	budgetByType.set(PLANNED_BUDGET,[]);
+	    	budgetByType.set(ACTUAL_BUDGET,[]);
+	    	
+	    	budgetChanges.forEach(element => {
+	    		switch(element.Budget_Type__c){
+	    			case INITIAL_BUDGET :
+	    				budgetByType.get(INITIAL_BUDGET).push(element);
+	    				break;
+	    			case PLANNED_BUDGET :
+	    				budgetByType.get(PLANNED_BUDGET).push(element);
+	    				break;
+	    			case ACTUAL_BUDGET :
+	    				budgetByType.get(ACTUAL_BUDGET).push(element); 
+	    		}
+	    	});
+    	}
     	
     	return budgetByType;    	
     },
     
     createXaxisForBudget : function(budgets,beforeFromDateValue,currentMonth){    	
-    	const X_AXIS_LENGTH = 12;
-    	var xAxis = new Array(X_AXIS_LENGTH);
+    	const X_AXIS_LENGTH = 12;    	
+    	var xAxis = new Array(X_AXIS_LENGTH);    	
     	
-    	console.log(currentMonth);
     	if(!budgets.length){
     		this.fillXAxisWith(xAxis,beforeFromDateValue,currentMonth,X_AXIS_LENGTH);
     		return xAxis;
-    	}    	    	
-    	xAxis.fill(null);  
+    	}    
     	
-    	budgets.forEach(element => {    		
-    		var createdDate = new Date(element.Change_Date__c);
-    		xAxis[createdDate.getMonth()] = element.New_Value__c;
-    	});    	
+    	xAxis.fill(null);    	
+    	var lastValue = budgets[budgets.length-1].New_Value__c;   	
     	
-    	var lastValue = budgets[budgets.length-1].New_Value__c;
-    	
+    	this.fillXAxisWithMonthValues(budgets,xAxis); 
     	this.fillXAxisWith(xAxis,beforeFromDateValue,currentMonth,X_AXIS_LENGTH);
-    	console.log(lastValue);
-    	for(var i = X_AXIS_LENGTH-1;i>=0;i--){
-    		lastValue = (xAxis[i] != null && xAxis[i] != lastValue) ? xAxis[i] : lastValue;  	
-    		if(i <= currentMonth){
-    			xAxis[i] = lastValue;
-    		}
-    	}
+    	this.fillXAxisWithOldestValues(lastValue,xAxis,currentMonth);
+    	this.fillConnectionsOnXAxis(xAxis,currentMonth);    	
     	
     	return xAxis;    	
     },    
@@ -146,10 +163,45 @@
     	return (fromDate.getTime() <= currentDate.getTime()) && (toDate.getTime() >= currentDate.getTime());
     },
     
-    fillXAxisWith : function(xAxis,beforeFromDateValue,currentMonth,X_AXIS_LENGTH ){
+    fillXAxisWith : function(xAxis,beforeFromDateValue,currentMonth){
     	var i = 0; 
-    	while(xAxis[i] == null && i < X_AXIS_LENGTH && i <= currentMonth ){
-    		xAxis[i++] = beforeFromDateValue;
-    	}    	
+    	if(xAxis){
+	    	while(xAxis[i] == null && i < xAxis.length && i <= currentMonth ){
+	    		xAxis[i++] = beforeFromDateValue;
+	    	}    	
+    	}
+    },
+    
+    fillXAxisWithMonthValues : function(budgets,xAxis){    	
+    	if(budgets && xAxis){
+	    	budgets.forEach(element => {    		
+	    		var createdDate = new Date(element.Change_Date__c);
+	    		xAxis[createdDate.getMonth()] = element.New_Value__c;
+	    	}); 
+    	}
+    },
+    
+    fillXAxisWithOldestValues : function(oldestValue,xAxis,currentMonth){
+    	if(xAxis){
+	    	var i = xAxis.length-1;
+	        while(xAxis[i] == null && i>=0){
+	            if(i <= currentMonth){
+	                xAxis[i] = oldestValue;
+	            }
+	            i--;
+	        }
+    	}
+    },
+    
+    fillConnectionsOnXAxis : function(xAxis,currentMonth){
+    	if(xAxis){
+	    	var lastValue = xAxis[0];
+	    	for(var i = 0;i < xAxis.length;i++){
+	    		lastValue = (xAxis[i] != null && xAxis[i] != lastValue) ? xAxis[i] : lastValue;  	
+	    		if(i <= currentMonth){
+	    			xAxis[i] = lastValue;
+	    		}
+	    	}
+    	}
     }
 })
