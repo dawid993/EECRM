@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -90,42 +89,34 @@
                 <value>
                     <fullName>e-Commerce</fullName>
                     <default>false</default>
-                    <label>e-Commerce</label>
                 </value>
                 <value>
                     <fullName>Medicine</fullName>
                     <default>false</default>
-                    <label>Medicine</label>
                 </value>
                 <value>
                     <fullName>Energy</fullName>
                     <default>false</default>
-                    <label>Energy</label>
                 </value>
                 <value>
                     <fullName>Chemical</fullName>
                     <default>false</default>
-                    <label>Chemical</label>
                 </value>
                 <value>
                     <fullName>Manufacturing</fullName>
                     <default>false</default>
-                    <label>Manufacturing</label>
                 </value>
                 <value>
                     <fullName>Public Health</fullName>
                     <default>false</default>
-                    <label>Public Health</label>
                 </value>
                 <value>
                     <fullName>Telecommunications</fullName>
                     <default>false</default>
-                    <label>Telecommunications</label>
                 </value>
                 <value>
                     <fullName>Teleworking</fullName>
                     <default>false</default>
-                    <label>Teleworking</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -221,22 +212,18 @@
                 <value>
                     <fullName>Important</fullName>
                     <default>false</default>
-                    <label>Important</label>
                 </value>
                 <value>
                     <fullName>Major</fullName>
                     <default>false</default>
-                    <label>Major</label>
                 </value>
                 <value>
                     <fullName>Minor</fullName>
                     <default>false</default>
-                    <label>Minor</label>
                 </value>
                 <value>
                     <fullName>Trivial</fullName>
                     <default>false</default>
-                    <label>Trivial</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -289,27 +276,22 @@
                 <value>
                     <fullName>Planing</fullName>
                     <default>false</default>
-                    <label>Planing</label>
                 </value>
                 <value>
                     <fullName>Designing</fullName>
                     <default>false</default>
-                    <label>Designing</label>
                 </value>
                 <value>
                     <fullName>Development</fullName>
                     <default>false</default>
-                    <label>Development</label>
                 </value>
                 <value>
                     <fullName>Testing</fullName>
                     <default>false</default>
-                    <label>Testing</label>
                 </value>
                 <value>
                     <fullName>Maintance</fullName>
                     <default>false</default>
-                    <label>Maintance</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -339,5 +321,4 @@
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <startsWith>Vowel</startsWith>
-    <visibility>Public</visibility>
 </CustomObject>

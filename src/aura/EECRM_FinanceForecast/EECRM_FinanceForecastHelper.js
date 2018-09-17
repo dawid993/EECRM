@@ -39,7 +39,7 @@
                   }
             }]            
         }  
-       };
+       }; 
        
        var data = {
 		  labels: labels,
@@ -87,7 +87,29 @@
 		      // notice the gap in the data and the spanGaps: false
 		      data: actualCostChanges,
 		      spanGaps: false,
-		    }		
+		    },{
+			      label: "Initial Budget",
+			      fill: false,
+			      lineTension: 0.1,
+			      backgroundColor: "rgba(117,225,0,0.4)",
+			      borderColor: "rgb(117, 155, 0)",
+			      borderCapStyle: 'butt',
+			      borderDash: [],
+			      borderDashOffset: 0.0,
+			      borderJoinStyle: 'miter',
+			      pointBorderColor: "white",
+			      pointBackgroundColor: "black",
+			      pointBorderWidth: 1,
+			      pointHoverRadius: 8,
+			      pointHoverBackgroundColor: "brown",
+			      pointHoverBorderColor: "yellow",
+			      pointHoverBorderWidth: 2,
+			      pointRadius: 4,
+			      pointHitRadius: 10,
+			      // notice the gap in the data and the spanGaps: false
+			      data: initialBudgetChanges,
+			      spanGaps: false,
+			    }				    
 		  ]
 		};
 		
@@ -110,28 +132,24 @@
     	return labels; 
     
     },   
-    groupBudgetByTypes : function(budgetChanges){
-    	const INITIAL_BUDGET = 'Initial';
-    	const PLANNED_BUDGET = 'Planned';
-    	const ACTUAL_BUDGET = 'Actual';
-    	
+    groupBudgetByTypes : function(budgetChanges){    
     	var budgetByType = new Map();
     	
     	if(budgetChanges){
-	    	budgetByType.set(INITIAL_BUDGET,[]);
-	    	budgetByType.set(PLANNED_BUDGET,[]);
-	    	budgetByType.set(ACTUAL_BUDGET,[]);
+	    	budgetByType.set(globalValues.INITIAL_BUDGET,[]);
+	    	budgetByType.set(globalValues.PLANNED_BUDGET,[]);
+	    	budgetByType.set(globalValues.ACTUAL_BUDGET,[]);
 	    	
 	    	budgetChanges.forEach(element => {
 	    		switch(element.Budget_Type__c){
-	    			case INITIAL_BUDGET :
-	    				budgetByType.get(INITIAL_BUDGET).push(element);
+	    			case globalValues.INITIAL_BUDGET :
+	    				budgetByType.get(globalValues.INITIAL_BUDGET).push(element);
 	    				break;
-	    			case PLANNED_BUDGET :
-	    				budgetByType.get(PLANNED_BUDGET).push(element);
+	    			case globalValues.PLANNED_BUDGET :
+	    				budgetByType.get(globalValues.PLANNED_BUDGET).push(element);
 	    				break;
-	    			case ACTUAL_BUDGET :
-	    				budgetByType.get(ACTUAL_BUDGET).push(element); 
+	    			case globalValues.ACTUAL_BUDGET :
+	    				budgetByType.get(globalValues.ACTUAL_BUDGET).push(element); 
 	    		}
 	    	});
     	}

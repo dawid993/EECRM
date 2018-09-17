@@ -1,6 +1,7 @@
 <aura:component controller="EECRM_SLDS_FinanceForecastController">
 	<aura:attribute name="project" type="EECRM_Project__c" required="true"/>
     <ltng:require scripts="{!$Resource.Charts}" afterScriptsLoaded="{!c.drawBudgetChangesDiagram}"/>
+     <ltng:require scripts="{!$Resource.EECRM_JS_Utils}"/>
     <div class="slds-container--medium">
         <!-- Doughnut Chart -->
         <div class="chart-demo">
@@ -10,4 +11,4 @@
             </div>
         </div> 
     </div>
-</aura:component> 
+</aura:component>
