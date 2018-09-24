@@ -1,14 +1,25 @@
-<aura:component controller="EECRM_SLDS_FinanceForecastController">
+<aura:component controller="EECRM_SLDS_FinanceForecastController">	
+	<ltng:require scripts="{!$Resource.Charts}" afterScriptsLoaded="{!c.drawBudgetChangesDiagram}"/>
+    <ltng:require scripts="{!$Resource.EECRM_JS_Utils}"/>
+    
+    
 	<aura:attribute name="project" type="EECRM_Project__c" required="true"/>
-    <ltng:require scripts="{!$Resource.Charts}" afterScriptsLoaded="{!c.drawBudgetChangesDiagram}"/>
-     <ltng:require scripts="{!$Resource.EECRM_JS_Utils}"/>
-    <div class="slds-container--medium">
-        <!-- Doughnut Chart -->
-        <div class="chart-demo">
-            <h2 class="title">Chart.Js</h2>
-            <div>
-                <canvas class="myCanvas" id="budgetChangeChart" width="50" height="50"></canvas>
+	<aura:attribute name="chartStartDate" type="Date" required="true" access="private"/>    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+   
+    <lightning:layout class="slds-container--medium" multipleRows="true">
+	    <lightning:layoutItem class="slds-align_absolute-center" size="12">
+	    		<lightning:buttonGroup>
+			        <lightning:button label="Year back" onclick="{!c.setOneYearBack}" />			    
+			        <lightning:button label="Year forward" onclick="{!c.setOneYearForward}" /> 
+	    		</lightning:buttonGroup>
+	    </lightning:layoutItem>       
+        <lightning:layoutItem class="chart-demo" size="12">
+            <h2 class="title">Budget Changes</h2>
+            <div id="budgetChanges">
+                <canvas id="budgetChangeChart" width="50" height="50"></canvas>
             </div>
-        </div> 
-    </div>
-</aura:component>
+        </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>     

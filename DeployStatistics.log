@@ -1,16 +1,16 @@
-Deploy Succeeded.
+Deploy Failed.
 
-Id: 0Af1r00000XZy30CAD
-Status: Succeeded
-Success: true
+Id: 0Af1r00000icnl7CAA
+Status: Failed
+Success: false
 Done: true
 Number Component Errors; 0
-Number Components Deployed: 70
-Number Components Total: 70
+Number Components Deployed: 102
+Number Components Total: 102
 Number Test Errors; 0
 Number Tests Completed: 513
 Number Tests Total: 513
 
 
-Test Total Time: 52182
+Test Total Time: 34682
 

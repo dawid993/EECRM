@@ -95,6 +95,7 @@ public class EECRM_Projects extends fflib_SObjectDomain {
         budgetChange.New_Value__c = newValue;
         budgetChange.Old_Value__c = oldValue;
         budgetChange.Budget_Type__c = type;  
+        budgetChange.Change_Date__c = Date.today();
         return budgetChange;
     }
 

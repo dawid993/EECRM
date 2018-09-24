@@ -6,3 +6,7 @@
 force.json
 force.json
 salesforce.schema
+.settings/org.eclipse.wst.jsdt.ui.superType.name
+.vscode/settings.json
+DeployStatistics.log
+force.json.orig
