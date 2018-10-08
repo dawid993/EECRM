@@ -95,5 +95,21 @@
 				}
 			}
 		});
+    },
+    
+    createPicklist : function(sObjectName,sObjectFieldName,fieldLabel,selectedValues,containerId,cmp){
+    	$A.createComponent(
+            "c:PicklistComponent",
+            {
+            	"sObjectName" : sObjectName,
+                "sObjectFieldName": sObjectFieldName,
+                "fieldLabel": fieldLabel,
+                "selectedValues": selectedValues                
+            },function(newPicklist, status, errorMessage){
+            	if (status === "SUCCESS") {
+                    var body = cmp.find(containerId);
+                    body.set("v.body",newPicklist);                
+                }
+            })
     }
 })

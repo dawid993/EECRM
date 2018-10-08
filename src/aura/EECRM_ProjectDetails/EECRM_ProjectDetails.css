@@ -11,3 +11,8 @@
 .THIS .inActiveErrorMsg{
     display: none;
 }
+
+.THIS .scrollableContent{
+	overflow-y: scroll; 
+	height: 599px;
+}

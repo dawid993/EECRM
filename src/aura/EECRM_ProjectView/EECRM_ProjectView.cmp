@@ -19,18 +19,21 @@
             </div>
         </lightning:layoutItem>         
      </lightning:layout>
-    <lightning:tabSet class="slds-box slds-theme_shade slds-m-top_small">
-        <lightning:tab >
-             <aura:set attribute="label">
-                 <lightning:icon iconName="utility:connected_apps" />
-                 Information                 
-            </aura:set>
-            <c:EECRM_ProjectDetails project="{!v.project}"/>
-        </lightning:tab>
-        <lightning:tab>
-             <aura:set attribute="label">Finance/Forecast</aura:set>  
-             <c:EECRM_FinanceForecast project="{!v.project}"/>         
-        </lightning:tab>
-      </lightning:tabSet>
-    
+     <div class="tabPanel">
+	    <lightning:tabSet class="slds-box slds-theme_shade slds-m-top_small">
+	        <lightning:tab >
+	             <aura:set attribute="label">
+	                 <lightning:icon iconName="utility:connected_apps" />
+	                 Information                 
+	            </aura:set>
+	            <lightning:layout aura:id="project-container">
+	            	<c:EECRM_FinanceForecast project="{!v.project}"/>
+	            </lightning:layout>
+	        </lightning:tab>
+	        <lightning:tab>
+	             <aura:set attribute="label">Finance/Forecast</aura:set>  
+	             <c:EECRM_FinanceForecast project="{!v.project}"/>         
+	        </lightning:tab>
+	      </lightning:tabSet>
+    </div>
 </aura:component>

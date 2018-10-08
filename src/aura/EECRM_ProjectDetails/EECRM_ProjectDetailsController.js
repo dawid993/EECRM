@@ -1,10 +1,12 @@
 ({
 	doInit: function(component,event,helper){
-		helper.setInitialBudgetLimit(component);
+		console.log("PROJECTDETAILS");
+		helper.setInitialBudgetLimit(component);		
+		console.log("PROJECTDETAILS2");		
 	},
 
 	handleStatusPicklistEvent: function (component, event, helper) {
-		switch (event.getParam("sObjectFieldName")) {
+		switch (event.getParam("sObjectFieldName")) { 
 			case "Category__c": {
 				component.set("v.project.Category__c", event.getParam("picklistValue"));
 				break;

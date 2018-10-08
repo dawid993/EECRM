@@ -1,5 +1,6 @@
 ({
 	doInit : function(component,event,helper){
+	console.log('FinanceForecast')
 		var startChartDate;	
 		startChartDate = new Date();
 		startChartDate.setMonth(0);

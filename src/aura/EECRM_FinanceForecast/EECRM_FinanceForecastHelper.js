@@ -33,7 +33,8 @@
 	
 	recreateDiagram : function(currentDiagram){
 		currentDiagram.remove(); 
-		document.getElementById("budgetChanges").innerHTML = "<canvas id='budgetChangeChart' width='50' height='50'></canvas>";
+		var canvasElement = "<canvas id='budgetChangeChart' width='50' height='50'></canvas>";
+		document.getElementById("budgetChanges").innerHTML = canvasElement;
 		return  document.getElementById('budgetChangeChart'); 		
 	},
 	

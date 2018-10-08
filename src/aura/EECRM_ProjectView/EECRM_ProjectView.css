@@ -1,2 +1,7 @@
 .THIS {
+	margin-bottom: 25px;
+}
+
+.THIS.tabPanel{
+	margin-bottom: 0px;
 }
