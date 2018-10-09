@@ -35,13 +35,25 @@
                                 <lightning:input label="Mail box" type="email" value="{!v.project.Mailbox__c}" required="true" />
                             </lightning:layoutItem>
                             <lightning:layoutItem size="3" padding="around-small" aura:id="category-picklist">
-                                <c:PicklistComponent sObjectName="EECRM_Project__c" sObjectFieldName="Category__c" fieldLabel="Category" selectedValues="{!v.project.Category__c}"/>
+                                <c:PicklistComponent 
+                                	sObjectName="EECRM_Project__c" 
+	                                sObjectFieldName="Category__c" 
+	                                fieldLabel="Category" 
+	                                currentEntity="{!v.project}"/>
                             </lightning:layoutItem>
                             <lightning:layoutItem size="3" padding="around-small" aura:id="status-picklist">
-                                <c:PicklistComponent sObjectName="EECRM_Project__c" sObjectFieldName="Status__c" fieldLabel="Status" selectedValues="{!v.project.Status__c}"/>
+                                <c:PicklistComponent 
+                                	sObjectName="EECRM_Project__c" 
+                                	sObjectFieldName="Status__c" 
+                                	fieldLabel="Status" 
+                                	currentEntity="{!v.project}"/>
                             </lightning:layoutItem>
                             <lightning:layoutItem size="3" padding="around-small" aura:id="priority-picklist">
-                                <c:PicklistComponent sObjectName="EECRM_Project__c" sObjectFieldName="Priority__c" fieldLabel="Priority" selectedValues="{!v.project.Priority__c}"/>
+                                <c:PicklistComponent 
+                                	sObjectName="EECRM_Project__c" 
+                                	sObjectFieldName="Priority__c" 
+                                	fieldLabel="Priority" 
+                                	currentEntity="{!v.project}"/>
                             </lightning:layoutItem>
                             <lightning:layoutItem size="4" padding="around-small">
                                 <lightning:input label="Planned start date" type="date" value="{!v.project.Planned_Start_Date__c}" required="true" />

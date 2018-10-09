@@ -1,16 +1,19 @@
 ({
-	doInit : function(component, event, helper) {
-		console.log("PICKLIST");
+	doInit : function(component, event, helper) {		
 		var action = component.get("c.getPicklistValues");
         action.setParams({
             "sObjectName": component.get("v.sObjectName"),
             "sObjectFieldName": component.get("v.sObjectFieldName")            
         });
         
-        var selectedValues = component.get("v.selectedValues");        
+        var currentEntity = component.get("v.currentEntity");
+           
         var selectedValuesSet = new Set();
-        selectedValuesSet.add(selectedValues);
-        console.log(selectedValues);
+        
+        if(currentEntity){
+        	selectedValuesSet.add(currentEntity[component.get("v.sObjectFieldName")]);
+        }
+        
         
         var opts=[];
         var picklistField = component.find("select-input");
@@ -27,10 +30,10 @@
                 	selected: selectedValuesSet.has(currentValue)});
             }
             picklistField.set("v.options", opts);
-            console.log("PICKLIST3"); 
-        });        
-        $A.enqueueAction(action);
-        console.log("PICKLIST2"); 
+            console.log('123');            
+        }); 
+             
+        $A.enqueueAction(action);        	  
 	},
     
     onPicklistChange : function(component, event, helper){     

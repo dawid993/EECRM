@@ -1,8 +1,6 @@
 ({
-	doInit: function(component,event,helper){
-		console.log("PROJECTDETAILS");
+	doInit: function(component,event,helper){		
 		helper.setInitialBudgetLimit(component);		
-		console.log("PROJECTDETAILS2");		
 	},
 
 	handleStatusPicklistEvent: function (component, event, helper) {

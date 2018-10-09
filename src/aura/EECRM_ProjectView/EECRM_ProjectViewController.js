@@ -1,6 +1,5 @@
 ({
 	doInit : function(component, event, helper) {		
-	console.log("PROJECTVIEW");
 		var projectId = component.get("v.pageReference").state.id;	
 	
 		if(projectId){		
@@ -11,14 +10,11 @@
 			
 			action.setCallback(this,function(response){			
 				var resultFromSFDC = response.getReturnValue();				
-				component.set("v.project",resultFromSFDC);
-				helper.createPicklist(resultFromSFDC,component.find('project-container'));
+				component.set("v.project",resultFromSFDC);				
 				console.log("PROJECTVIEW3");	
 			});
 
 			$A.enqueueAction(action);
-		}
-		
-		console.log("PROJECTVIEW2"); 
+		}				
 	}
 })
